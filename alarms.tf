@@ -1,8 +1,6 @@
 # --------------------------------------------------------------------------------------------------
 # The SNS topic to which CloudWatch alarms send events.
 # --------------------------------------------------------------------------------------------------
-data "aws_caller_identity" "current" {}
-
 resource "aws_sns_topic" "alarms" {
   count             = var.enabled ? 1 : 0
   name              = var.sns_topic_name
