@@ -7,6 +7,9 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = filebase64sha256("${path.module}/lambda.zip")
   runtime          = "nodejs12.x"
   tags             = var.tags
+  tracing_config {
+    mode = "Active"
+  }
   environment {
     variables = {
       LOG_GROUP = var.cloudtrail_log_group_name,
@@ -26,6 +29,6 @@ resource "aws_lambda_permission" "default" {
 
 resource "aws_cloudwatch_log_group" "alarm_lambda" {
   name              = "/aws/lambda/${var.lambda_name}"
-  retention_in_days = 14
+  retention_in_days = 365
   tags              = var.tags
 }

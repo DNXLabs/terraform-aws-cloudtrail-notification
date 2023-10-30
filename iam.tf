@@ -36,16 +36,12 @@ resource "aws_iam_policy" "lambda_cw" {
         Effect : "Allow"
       },
       {
-        Action : [
-          "SNS:Publish"
-        ],
+        Action : ["SNS:Publish"],
         Resource : "arn:aws:sns:*:*:*",
         Effect : "Allow"
       },
       {
-        Action : [
-          "kms:Decrypt", "kms:GenerateDataKey*"
-        ],
+        Action : ["kms:Decrypt", "kms:GenerateDataKey*"],
         Resource : "*",
         Effect : "Allow"
       }
@@ -57,4 +53,3 @@ resource "aws_iam_role_policy_attachment" "lambda_cw" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.lambda_cw.arn
 }
-

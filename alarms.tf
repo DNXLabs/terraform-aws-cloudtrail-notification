@@ -70,10 +70,8 @@ data "aws_iam_policy_document" "alarms_policy" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    resources = [
-      aws_sns_topic.alarms[0].arn,
-    ]
-    sid = "allow-org-accounts"
+    resources = [aws_sns_topic.alarms[0].arn]
+    sid       = "allow-org-accounts"
   }
 }
 
