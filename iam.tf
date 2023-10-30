@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = var.tags
+  tags               = var.tags
 }
 
 resource "aws_iam_policy" "lambda_cw" {
@@ -32,20 +32,16 @@ resource "aws_iam_policy" "lambda_cw" {
           "logs:DescribeMetricFilters",
           "logs:FilterLogEvents"
         ],
-        Resource : [aws_lambda_function.lambda.arn,"arn:aws:logs:*:*:*","arn:aws:cloudwatch:*:*:*"]
+        Resource : [aws_lambda_function.lambda.arn, "arn:aws:logs:*:*:*", "arn:aws:cloudwatch:*:*:*"]
         Effect : "Allow"
       },
       {
-        Action : [
-          "SNS:Publish"
-        ],
+        Action : ["SNS:Publish"],
         Resource : "arn:aws:sns:*:*:*",
         Effect : "Allow"
       },
       {
-        Action : [
-          "kms:Decrypt", "kms:GenerateDataKey*"
-        ],
+        Action : ["kms:Decrypt", "kms:GenerateDataKey*"],
         Resource : "*",
         Effect : "Allow"
       }
@@ -57,5 +53,3 @@ resource "aws_iam_role_policy_attachment" "lambda_cw" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.lambda_cw.arn
 }
-
-

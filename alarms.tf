@@ -1,8 +1,6 @@
 # --------------------------------------------------------------------------------------------------
 # The SNS topic to which CloudWatch alarms send events.
 # --------------------------------------------------------------------------------------------------
-data "aws_caller_identity" "current" {}
-
 resource "aws_sns_topic" "alarms" {
   count             = var.enabled ? 1 : 0
   name              = var.sns_topic_name
@@ -72,10 +70,8 @@ data "aws_iam_policy_document" "alarms_policy" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    resources = [
-      aws_sns_topic.alarms[0].arn,
-    ]
-    sid = "allow-org-accounts"
+    resources = [aws_sns_topic.alarms[0].arn]
+    sid       = "allow-org-accounts"
   }
 }
 
@@ -85,7 +81,7 @@ resource "random_string" "cloudtrail_alarm_suffix" {
   special = false
   lower   = true
   upper   = false
-  number  = false
+  numeric = false
 }
 
 resource "aws_cloudformation_stack" "cloudtrail_alarm" {
