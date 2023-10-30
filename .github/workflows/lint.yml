@@ -62,5 +62,4 @@ jobs:
         run: |
           sed -i -e 's/>=/=/' -e 's/ \(\d\+\.\d\+\)"/ \1.0"/' _versions.tf
           terraform init
-          terraform validate |
-            -var "region=${AWS_REGION}"
+          terraform validate
