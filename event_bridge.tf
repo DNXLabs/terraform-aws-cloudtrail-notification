@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "alarm_notification" {
   name        = "cloudtrail_alarm_custom_notifications"
   description = "Will be notified with a custom message when any alarm is performed"
-  is_enabled = true
+  is_enabled  = true
 
   event_pattern = <<PATTERN
   {
