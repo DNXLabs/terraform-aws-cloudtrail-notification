@@ -81,7 +81,6 @@ resource "random_string" "cloudtrail_alarm_suffix" {
   special = false
   lower   = true
   upper   = false
-  numeric = false
 }
 
 resource "aws_cloudformation_stack" "cloudtrail_alarm" {
