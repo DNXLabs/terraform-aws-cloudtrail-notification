@@ -27,6 +27,24 @@ variable "sns_topic_name" {
   default     = "CISAlarmV2"
 }
 
+variable "chatbot_sns_topic" {
+  description = "The arn of the SNS Topic which will be notified when any alarm is performed."
+  type        = string
+  default     = ""
+}
+
+# variable "email_sns_topic" {
+#   description = "The arn of the SNS Topic which will be notified when any alarm is performed via email."
+#   type        = string
+#   default     = ""
+# }
+
+variable "emails" {
+  default = []
+  type    = list(string)
+}
+
+
 variable "alarm_account_ids" {
   default = []
   type    = list(string)
@@ -44,4 +62,10 @@ variable "tags" {
   default = {
     "Terraform" = true
   }
+}
+
+variable "kms_key" {
+  default     = ""
+  type        = string
+  description = "kms used to encrypt SNS topic"
 }
