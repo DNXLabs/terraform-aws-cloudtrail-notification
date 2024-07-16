@@ -9,13 +9,13 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
+  name               = "cloudtrail-cn-role-${data.aws_region.current.name}"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
   tags               = var.tags
 }
 
 resource "aws_iam_policy" "lambda_cw" {
-  name        = "lambda_cw"
+  name        = "cloudtrail-cn-policy-${data.aws_region.current.name}"
   path        = "/"
   description = "IAM policy for logging from a lambda"
   policy = jsonencode({

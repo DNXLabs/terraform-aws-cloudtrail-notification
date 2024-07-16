@@ -5,7 +5,7 @@ resource "aws_lambda_function" "lambda" {
   handler          = "index.handler"
   timeout          = var.lambda_timeout
   source_code_hash = filebase64sha256("${path.module}/lambda.zip")
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs18.x"
   tags             = var.tags
   tracing_config {
     mode = "Active"
