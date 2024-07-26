@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "alarm_notification" {
+  count       = length(var.emails) > 0 ? 1 : 0
   name        = "cloudtrail_alarm_custom_notifications"
   description = "Will be notified with a custom message when any alarm is performed"
-  is_enabled  = true
 
   event_pattern = <<PATTERN
   {
@@ -21,8 +21,10 @@ resource "aws_cloudwatch_event_rule" "alarm_notification" {
   }
   PATTERN
 }
+
 resource "aws_cloudwatch_event_target" "lambda_target" {
-  rule      = aws_cloudwatch_event_rule.alarm_notification.name
+  count     = length(var.emails) > 0 ? 1 : 0
+  rule      = aws_cloudwatch_event_rule.alarm_notification[0].name
   target_id = "NotifyLambda"
-  arn       = aws_lambda_function.lambda.arn
+  arn       = aws_lambda_function.lambda[0].arn
 }

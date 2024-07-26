@@ -11,6 +11,10 @@ Parameters:
   AlarmNotificationTopic:
     Type: String
     Description: SNS Notification Topic to send alarms to
+    Default: ""
+
+Conditions:
+  HasAlarmNotificationTopic: !Not [!Equals [!Ref AlarmNotificationTopic, ""]]
 
 #====================================================================================================
 Resources:
@@ -31,8 +35,7 @@ Resources:
     Properties:
       AlarmName: RootAccountUsage
       AlarmDescription: (CIS-3.3) Alarms when Root Account is used
-      AlarmActions:
-        - !Ref AlarmNotificationTopic
+      AlarmActions: !If [HasAlarmNotificationTopic, [!Ref AlarmNotificationTopic], !Ref AWS::NoValue]
       MetricName: RootAccountUsageEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
@@ -57,8 +60,7 @@ Resources:
     Properties:
       AlarmName: NoMFALogin
       AlarmDescription: Monitoring for single-factor console logins will increase visibility into accounts that are not protected by MFA.
-      AlarmActions:
-        - !Ref AlarmNotificationTopic
+      AlarmActions: !If [HasAlarmNotificationTopic, [!Ref AlarmNotificationTopic], !Ref AWS::NoValue]
       MetricName: NoMFALoginEventCount
       Namespace: CloudTrailMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold

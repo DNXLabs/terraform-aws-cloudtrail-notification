@@ -1,6 +1,5 @@
 
 resource "random_string" "cloudtrail_alarm_suffix" {
-  count   = var.enabled ? 1 : 0
   length  = 8
   special = false
   lower   = true
@@ -9,12 +8,11 @@ resource "random_string" "cloudtrail_alarm_suffix" {
 }
 
 resource "aws_cloudformation_stack" "cloudtrail_alarm" {
-  count         = var.enabled ? 1 : 0
-  name          = "cloudtrail-alarm-${random_string.cloudtrail_alarm_suffix[0].result}"
+  name          = "cloudtrail-alarm-${random_string.cloudtrail_alarm_suffix.result}"
   template_body = var.alarm_mode == "full" ? file("${path.module}/cloudtrail-alarms-full.cf.json") : file("${path.module}/cloudtrail-alarms-light.cf.yml")
 
   parameters = {
     CloudTrailLogGroupName = var.cloudtrail_log_group_name
-    AlarmNotificationTopic = var.chatbot_sns_topic # aws_sns_topic.alarms[0].id
+    AlarmNotificationTopic = var.chatbot_sns_topic
   }
 }
