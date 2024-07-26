@@ -12,6 +12,11 @@
             "Description": "SNS Notification Topic to send alarms to"
         }
     },
+    "Conditions": {
+        "HasAlarmNotificationTopic": {
+            "Fn::Not": [{ "Fn::Equals": [{ "Ref": "AlarmNotificationTopic" }, ""] }]
+        }
+    },
     "Resources" : {
         "SecurityGroupChangesMetricFilter": {
             "Type": "AWS::Logs::MetricFilter",
@@ -31,7 +36,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailSecurityGroupChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a Security Group.",
                 "MetricName" : "SecurityGroupEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -61,7 +66,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailNetworkAclChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a Network ACL.",
                 "MetricName" : "NetworkAclEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -91,7 +96,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailGatewayChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a Customer or Internet Gateway.",
                 "MetricName" : "GatewayEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -121,7 +126,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailVpcChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a VPC, VPC peering connection or VPC connection to classic.",
                 "MetricName" : "VpcEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -151,7 +156,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailEC2InstanceChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, terminate, start, stop or reboot an EC2 instance.",
                 "MetricName" : "EC2InstanceEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -181,7 +186,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailEC2LargeInstanceChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, terminate, start, stop or reboot a 4x or 8x-large EC2 instance.",
                 "MetricName" : "EC2LargeInstanceEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -211,7 +216,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a CloudTrail trail, or to start or stop logging to a trail.",
                 "MetricName" : "CloudTrailEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -242,7 +247,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailConsoleSignInFailuresV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an unauthenticated API call is made to sign into the console.",
                 "MetricName" : "ConsoleSignInFailureCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -273,7 +278,7 @@
             "Properties": {
                 "AlarmName" : "CloudTrailAuthorizationFailuresV2",
                 "AlarmDescription" : "Alarms when an unauthorized API call is made.",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "MetricName" : "AuthorizationFailureCount",
                 "Namespace" : "CloudTrailMetrics",
                 "ComparisonOperator" : "GreaterThanOrEqualToThreshold",
@@ -303,7 +308,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailIAMPolicyChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to change an IAM policy.",
                 "MetricName" : "IAMPolicyEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -333,7 +338,7 @@
             "Type": "AWS::CloudWatch::Alarm",
             "Properties": {
                 "AlarmName" : "CloudTrailRouteTableChangesV2",
-                "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+                "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
                 "AlarmDescription" : "Alarms when an API call is made to create, update or delete a Route Table.",
                 "MetricName" : "RouteTableEventCount",
                 "Namespace" : "CloudTrailMetrics",
@@ -363,7 +368,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "CMKChangesV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Alarms each time when a CMK configuration change is made.",
               "MetricName" : "CMKEventCount",
               "Namespace" : "CloudTrailMetrics",
@@ -393,7 +398,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "RootAccountUsageAlarmV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Alarms each time when Root Account is used.",
               "MetricName" : "RootAccountUsageEventCount",
               "Namespace" : "CloudTrailMetrics",
@@ -425,7 +430,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "AWSConfigChangesAlarmV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Triggered by AWS Config changes.",
               "MetricName" : "ConfigEventCount",
               "Namespace" : "CloudTrailMetrics",
@@ -458,7 +463,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "S3BucketConfigChangesAlarmV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Triggered by AWS S3 Bucket config changes.",
               "MetricName" : "S3BucketEventCount",
               "Namespace" : "CloudTrailMetrics",
@@ -492,7 +497,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "ConsoleSignInWithoutMfaAlarmV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Triggered by sign-in requests made without MFA.",
               "MetricName" : "ConsoleSignInWithoutMfaCount",
               "Namespace" : "CloudTrailMetrics",
@@ -526,7 +531,7 @@
           "Type": "AWS::CloudWatch::Alarm",
           "Properties": {
               "AlarmName" : "OrganizationsChangesAlarmV2",
-              "AlarmActions": [{"Ref" : "AlarmNotificationTopic"}],
+              "AlarmActions": { "Fn::If" : [ "HasAlarmNotificationTopic", [{"Ref" : "AlarmNotificationTopic"}], { "Ref": "AWS::NoValue" } ] },
               "AlarmDescription" : "Triggered by AWS Organizations events.",
               "MetricName" : "OrganizationsEvents",
               "Namespace" : "CloudTrailMetrics",

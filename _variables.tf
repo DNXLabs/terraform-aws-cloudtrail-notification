@@ -1,9 +1,3 @@
-variable "enabled" {
-  description = "The boolean flag whether this module is enabled or not. No resources are created when set to false."
-  type        = bool
-  default     = true
-}
-
 variable "lambda_name" {
   description = "The name of the lambda which will be notified with a custom message when any alarm is performed."
   type        = string
@@ -33,19 +27,7 @@ variable "chatbot_sns_topic" {
   default     = ""
 }
 
-# variable "email_sns_topic" {
-#   description = "The arn of the SNS Topic which will be notified when any alarm is performed via email."
-#   type        = string
-#   default     = ""
-# }
-
 variable "emails" {
-  default = []
-  type    = list(string)
-}
-
-
-variable "alarm_account_ids" {
   default = []
   type    = list(string)
 }
