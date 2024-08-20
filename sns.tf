@@ -2,7 +2,7 @@
 # The SNS topic to which CloudWatch alarms send events.
 # --------------------------------------------------------------------------------------------------
 resource "aws_sns_topic" "alarms" {
-  count             = length(var.emails) > 0 ? 1 : 0
+  count             = length(var.endpoints) > 0 ? 1 : 0
   name              = var.sns_topic_name
   kms_master_key_id = var.kms_key #aws_kms_key.sns[0].id # default key does not allow cloudwatch alarms to publish
   tags              = var.tags
@@ -10,13 +10,13 @@ resource "aws_sns_topic" "alarms" {
 
 
 resource "aws_sns_topic_policy" "alarms" {
-  count  = length(var.emails) > 0 ? 1 : 0
+  count  = length(var.endpoints) > 0 ? 1 : 0
   arn    = aws_sns_topic.alarms[0].arn
   policy = data.aws_iam_policy_document.alarms_policy[0].json
 }
 
 data "aws_iam_policy_document" "alarms_policy" {
-  count     = length(var.emails) > 0 ? 1 : 0
+  count     = length(var.endpoints) > 0 ? 1 : 0
   policy_id = "allow-org-accounts"
 
   statement {
@@ -46,8 +46,8 @@ data "aws_iam_policy_document" "alarms_policy" {
 }
 
 resource "aws_sns_topic_subscription" "cloudtrail_custom_alarm_email" {
-  for_each  = toset(var.emails)
+  for_each  = toset(var.endpoints)
   topic_arn = aws_sns_topic.alarms[0].arn
-  protocol  = "email"
+  protocol  = var.alarm_protocol
   endpoint  = each.value
 }

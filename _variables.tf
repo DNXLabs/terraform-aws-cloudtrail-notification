@@ -27,11 +27,14 @@ variable "alarm_notification_sns_topic" {
   default     = ""
 }
 
-variable "emails" {
+variable "endpoints" {
   default = []
   type    = list(string)
 }
-
+variable "alarm_protocol" {
+  default = "email"
+  type    = string
+}
 variable "alarm_mode" {
   default     = "light"
   type        = string

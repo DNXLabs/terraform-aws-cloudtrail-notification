@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "lambda_assume_role" {
-  count = length(var.emails) > 0 ? 1 : 0
+  count = length(var.endpoints) > 0 ? 1 : 0
   statement {
     actions = ["sts:AssumeRole"]
     principals {
@@ -10,14 +10,14 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  count              = length(var.emails) > 0 ? 1 : 0
+  count              = length(var.endpoints) > 0 ? 1 : 0
   name               = "cloudtrail-cn-role-${data.aws_region.current.name}"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role[0].json
   tags               = var.tags
 }
 
 resource "aws_iam_policy" "lambda_cw" {
-  count       = length(var.emails) > 0 ? 1 : 0
+  count       = length(var.endpoints) > 0 ? 1 : 0
   name        = "cloudtrail-cn-policy-${data.aws_region.current.name}"
   path        = "/"
   description = "IAM policy for logging from a lambda"
@@ -53,7 +53,7 @@ resource "aws_iam_policy" "lambda_cw" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_cw" {
-  count      = length(var.emails) > 0 ? 1 : 0
+  count      = length(var.endpoints) > 0 ? 1 : 0
   role       = aws_iam_role.iam_for_lambda[0].name
   policy_arn = aws_iam_policy.lambda_cw[0].arn
 }
