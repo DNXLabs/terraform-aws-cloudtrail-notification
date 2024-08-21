@@ -13,6 +13,6 @@ resource "aws_cloudformation_stack" "cloudtrail_alarm" {
 
   parameters = {
     CloudTrailLogGroupName = var.cloudtrail_log_group_name
-    AlarmNotificationTopic = try(aws_sns_topic.alarms[0].arn, var.alarm_notification_sns_topic)
+    AlarmNotificationTopic = length(var.alarm_notification_sns_topic) > 0 ? var.alarm_notification_sns_topic : try(aws_sns_topic.alarms[0].arn, "")
   }
 }
