@@ -285,7 +285,7 @@
                 "EvaluationPeriods" : "1",
                 "Period" : "300",
                 "Statistic" : "Sum",
-                "Threshold" : "1"
+                "Threshold" : "5"
                 
             }
         },
@@ -483,7 +483,7 @@
           "Type": "AWS::Logs::MetricFilter",
           "Properties": {
               "LogGroupName": { "Ref" : "CloudTrailLogGroupName" },
-              "FilterPattern": "{ $.eventName = ConsoleLogin && $.additionalEventData.MFAUsed = No }",
+              "FilterPattern": "{ $.eventName = ConsoleLogin && $.additionalEventData.MFAUsed = No && $.userIdentity.type = IAMUser && $.responseElements.ConsoleLogin = Success }",
               "MetricTransformations": [
                   {
                       "MetricNamespace": "CloudTrailMetrics",

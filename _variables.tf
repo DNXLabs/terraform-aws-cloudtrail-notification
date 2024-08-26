@@ -21,17 +21,20 @@ variable "sns_topic_name" {
   default     = "CISAlarmV2"
 }
 
-variable "chatbot_sns_topic" {
+variable "alarm_notification_sns_topic" {
   description = "The arn of the SNS Topic which will be notified when any alarm is performed."
   type        = string
   default     = ""
 }
 
-variable "emails" {
+variable "endpoints" {
   default = []
   type    = list(string)
 }
-
+variable "alarm_protocol" {
+  default = "email"
+  type    = string
+}
 variable "alarm_mode" {
   default     = "light"
   type        = string
