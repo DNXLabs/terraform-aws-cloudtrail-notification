@@ -31,6 +31,11 @@ variable "endpoints" {
   default = []
   type    = list(string)
 }
+
+variable "alarm_sns_topic_arn" {
+  default = []
+  type    = list(string)
+}
 variable "alarm_protocol" {
   default = "email"
   type    = string
