@@ -31,23 +31,22 @@ Terraform module to provision an CloudTrail with a custom notification.
 
 ## Usage
 
-This example:.
+This example:
 
 ```terraform
 locals {
-  log_group_name    = "LogGroupName"
-  sns_topic_arn     = "arn:aws:sns:us-east-2:444455556666:MyTopic"
-  cloud_watch_log_group_arn     = "arn:aws:logs:us-east-2:444455556666:MyLog"
+  log_group_name = "LogGroupName"
+  sns_topic_arn  = "arn:aws:sns:us-east-2:444455556666:MyTopic"
 }
 
 module "cloudtrail_custom_alarms" {
-  enabled ? 1 : 0
-  cloudtrail_log_group_name     = local.log_group_name
-  aws_sns_topic_arn             = local.sns_topic_arn
-  lambda_timeout                = 5
-  cloudwatch_log_cloudtrail_arn = local.cloud_watch_log_group_arn
+  source                       = "git::https://github.com/DNXLabs/terraform-aws-cloudtrail-notification.git?ref=4.0.0"
+  cloudtrail_log_group_name    = local.log_group_name
+  alarm_notification_sns_topic = local.sns_topic_arn
+  alarm_mode                   = "light"  # or "full"
+  lambda_timeout               = 5
+  kms_key                      = ""  # Optional: KMS key ARN for SNS encryption
 }
-
 ```
 
 ## Requirements
@@ -82,9 +81,10 @@ module "cloudtrail_custom_alarms" {
 |------|-------------|------|---------|:--------:|
 | lambda_name | The name for the lambda resource for the custom message.  | `string` | `lambda_alarm_notification` | no |
 | cloudtrail_log_group_name | The name of the loggroup that has all Cloudtrail Logs that will be used to get information to create custom message. | `string` | n/a | yes |
-| aws_sns_topic_arn | The ARN of SNS Topic that will be responsible to send notification | `string` | n/a | yes |
-| lambda_timeout | Set lambda Timeout. | `number` | 3 | no |
-| cloudwatch_log_cloudtrail_arn | Cloudwatch Loggroup ARN | `string` | n/a | yes |
+| alarm_notification_sns_topic | The ARN of SNS Topic that will be responsible to send notification | `string` | `""` | no |
+| lambda_timeout | Set lambda Timeout. | `number` | `3` | no |
+| alarm_mode | Version of alarms to use. 'light' or 'full' available | `string` | `"light"` | no |
+| kms_key | KMS key ARN used to encrypt SNS topic | `string` | `""` | no |
 | tags | A map of tags to add to all resources. | `map(string)` | `{}` | no |
 
 ## Outputs
