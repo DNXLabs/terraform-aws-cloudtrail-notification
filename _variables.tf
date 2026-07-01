@@ -51,3 +51,9 @@ variable "kms_key" {
   type        = string
   description = "kms used to encrypt SNS topic"
 }
+
+variable "log_retention" {
+  default     = 365
+  type        = number
+  description = "The number of days you want to retain log events in the specified log group."
+}
