@@ -32,6 +32,6 @@ resource "aws_lambda_permission" "default" {
 resource "aws_cloudwatch_log_group" "alarm_lambda" {
   count             = length(var.emails) > 0 ? 1 : 0
   name              = "/aws/lambda/${var.lambda_name}"
-  retention_in_days = 365
+  retention_in_days = var.log_retention
   tags              = var.tags
 }
